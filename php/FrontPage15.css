@@ -1,0 +1,54 @@
+body {
+    background-color: white;
+}
+
+.text {
+    width: 75%;
+    height: 100%;
+    padding: 20px;
+    border-radius: 4px;
+    margin: 0 auto;
+    border-radius: 25px;
+    box-shadow: 4px 4px 4px 4px black;
+
+}
+
+.details {
+    width: 75%;
+    height: 100%;
+}
+
+h2 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+h2:hover {
+    color: lightpink;
+}
+
+.footer {
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    background-color: lightgray;
+}
+
+.footer ul {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    border-radius: 25px;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.footer li {
+    display: inline-block;
+}
+
+li image[src="img.php"]{
+    display: inline-block;
+    margin-right: 10px;
+}

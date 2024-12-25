@@ -1,0 +1,318 @@
+h1 {
+    text-align: center;
+}
+
+.event {
+    margin: auto;
+    width: 50%;
+    height: 100%;
+}
+
+.event form {
+    width: 100%;
+    height: 100%;
+    background-color: lightgray;
+    border-radius: 25px;
+    box-shadow: 0 8px 16px black;
+}
+
+.event label {
+    width: auto;
+    display: block;
+    text-align: center;
+}
+
+.event textarea {
+    width: 100%;
+    text-align: center;
+    border-radius: 25px;
+    box-sizing: border-box;
+    text-size-adjust: auto;
+}
+
+.event input {
+    width: 100%;
+    text-align: center;
+    border-radius: 25px;
+    box-sizing: border-box;
+    text-size-adjust: auto;
+}
+
+.event input[type="submit"] {
+    text-align: center;
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.event input[type="submit"]:hover {
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
+
+.event-list {
+    margin-top: 20px;
+}
+
+.event-item {
+    background-color: lightgray;
+    padding: 20px;
+    border-radius: 25px;
+}
+
+.event-item form {
+    display: inline-block;
+}
+
+.event-item form input[type="submit"] {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+
+.edit input[type="submit"]{
+    display: inline-block;
+    text-align: center;
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.edit input[type="submit"]:hover {
+    display: inline-block;
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
+
+
+.display {
+    width: 50%;
+    margin:  25px auto 0;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 6px 12px black;
+    border-radius: 25px;
+}
+
+.display hr {
+    border: none;
+    height: 1px;
+    margin: 20px;
+    background-color: black;
+}
+
+.displayMain {
+    width: 50%;
+    margin:  50px auto 0;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 6px 12px black;
+    border-radius: 25px;
+}
+
+.delete input[type="submit"] {
+    display: inline-block;
+    color: black;
+    background-color: white;
+    box-sizing: 100px;
+    text-align: center;
+}
+
+.delete input[type="submit"]:hover {
+    display: inline-block;
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
+
+
+.edit {
+    margin: auto;
+    width: 50%;
+    height: 100%;
+}
+
+.edit form {
+    width: 100%;
+    height: 100%;
+    background-color: lightgray;
+    border-radius: 25px;
+    box-shadow: 0 8px 16px black;
+}
+
+.edit label {
+    width: auto;
+    display: block;
+    text-align: center;
+}
+
+.edit textarea {
+    width: 100%;
+    text-align: center;
+    border-radius: 25px;
+    box-sizing: border-box;
+    text-size-adjust: auto;
+}
+
+.edit input {
+    width: 100%;
+    text-align: center;
+    border-radius: 25px;
+    box-sizing: border-box;
+    text-size-adjust: auto;
+}
+
+.editinput[type="submit"] {
+    text-align: center;
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.edit input[type="submit"]:hover {
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
+
+.displaySearch {
+    width: 50%;
+    margin: 10px auto 0;
+    padding: 20px;
+    text-align: center;
+}
+
+.displaySearch hr {
+    border: none;
+    height: 1px;
+    margin: 20px;
+    background-color: black;
+}
+
+.search1 form {
+    width: 100%;
+    height: 100%;
+    background-color: lightgray;
+    border-radius: 25px;
+    box-shadow: 0 8px 16px black;
+}
+
+.search1 label {
+    width: auto;
+    display: block;
+    text-align: center;
+}
+
+.search1 input{
+    
+    width: 100%;
+    text-align: center;
+    border-radius: 25px;
+    box-sizing: border-box;
+    text-size-adjust: auto;
+    
+}
+
+.search1 input[type="submit"] {
+    text-align: center;
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.search1 input[type="submit"]:hover {
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
+
+.search1 {
+    margin: auto;
+    width: 25%;
+    height: 100%;
+}
+
+
+.search1 button {
+    color: black;
+    background-color: white;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.search1 button:hover {
+    color: white;
+    background-color: black;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.displayDate {
+    width: 50%;
+    margin: 5px auto 0;
+    padding: 20px;
+    text-align: center;
+}
+
+.displayDate hr {
+    border: none;
+    height: 1px;
+    margin: 20px;
+    background-color: black;
+}
+
+.searchDate form {
+    width: 100%;
+    height: 100%;
+    background-color: lightgray;
+    border-radius: 25px;
+    box-shadow: 0 8px 16px black;
+}
+
+.searchDate label {
+    width: auto;
+    display: block;
+    text-align: center;
+}
+
+.searchDate input{
+    
+    width: 100%;
+    text-align: center;
+    border-radius: 25px;
+    box-sizing: border-box;
+    text-size-adjust: auto;
+    
+}
+
+.searchDate input[type="submit"] {
+    text-align: center;
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.searchDate input[type="submit"]:hover {
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
+
+.searchDate {
+    margin: auto;
+    width: 25%;
+    height: 100%;
+}
+
+
+.searchDate button {
+    color: black;
+    background-color: white;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.searchDate button:hover {
+    color: white;
+    background-color: black;
+    border-radius: 25px;
+    text-align: center;
+}

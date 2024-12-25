@@ -1,0 +1,28 @@
+.upperBox {
+    display: flex;
+    align-items: center;  /* Vertically align the items */
+    justify-content: flex-start;
+    background-color: skyblue;
+    height: 50%;
+    padding: 5px;
+    border-radius: 45px;  /* Align items to the start of the container */
+}
+
+.HomeImage {
+    width: 250px;  /* Adjust the size of the image */
+    height: 250px;  /* Maintain aspect ratio */
+    border-radius: 45px;
+    padding-right: 20px;
+    margin-left: 20px; /* Add space between image and text */
+}
+
+.homeTitle {
+    margin-top: 10%;
+    color: #6F4E37;
+    margin-right: 20px; /* Add space between title and image */
+}
+
+.HomeP {
+    color: #333;
+    margin-right: 20px; /* Add space between the paragraph and the image */
+}
