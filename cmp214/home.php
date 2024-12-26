@@ -49,32 +49,40 @@ var_dump($_SESSION['basket']);  // Debugging the basket content
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home page</title>
-    <link rel="stylesheet" href="home9.css">
+    <link rel="stylesheet" href="home10.css">
 </head>
 <body>
     <?php include 'nav.php'; ?>
+
+    <!-- Upper Box Section with Background -->
     <div class="upperBox">
-        <h1 class="homeTitle">Tyne Brew</h1>
-        <p class="HomeP">Welcome to our coffee shop! Where we make the best coffee on the planet.</p>
-        <img src="img/cmug.png" alt="image" class="HomeImage">
+        <div class="left-side">
+            <h1 class="homeTitle">Tyne Brew</h1>
+            <p class="HomeP">Welcome to our coffee shop! Where we make the best coffee on the planet.</p>
+        </div>
+        <div class="right-side">
+            <img src="img/cmug.png" alt="image" class="HomeImage">
+        </div>
     </div>
 
     <!-- Loop to display the top 3 products -->
-    <?php foreach ($products as $p): ?>
-        <div class="product-container">
-            <img src="<?= $p->image() ?>" width="200px" height="200px" alt="Product Image" />
-            <div class="product-info">
-                <h3><?= $p->name() ?></h3>
-                <p><?= $p->description() ?></p>
-                <p>Price: $<?= number_format($p->price(), 2) ?></p>  <!-- Display price -->
+    <section class="products">
+        <?php foreach ($products as $p): ?>
+            <div class="product-container">
+                <img src="<?= $p->image() ?>" width="200px" height="200px" alt="Product Image" />
+                <div class="product-info">
+                    <h3><?= $p->name() ?></h3>
+                    <p><?= $p->description() ?></p>
+                    <p>Price: $<?= number_format($p->price(), 2) ?></p>  <!-- Display price -->
+                </div>
+                <form method="post" action="">
+                    <input type="hidden" value="<?= $p->id() ?>" name="id">
+                    <input type="submit" class="btn" name="add" value="Add to Basket">
+                    <input type="submit" class="btn" name="add" value="View Item Info">
+                </form>
             </div>
-            <form method="post" action="">
-                <input type="hidden" value="<?= $p->id() ?>" name="id">
-                <input type="submit" class="btn" name="add" value="Add to Basket">
-                <input type="submit" class="btn" name="add" value="View Item Info">
-            </form>
-        </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+    </section>
 
 </body>
 </html>
