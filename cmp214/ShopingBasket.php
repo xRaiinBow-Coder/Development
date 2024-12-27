@@ -4,6 +4,34 @@
     // Initialize totalPrice to 0
     $totalPrice = 0;
 
+    // Handle quantity update or item removal
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Handle decrement
+        if (isset($_POST['decrement']) && isset($_POST['id'])) {
+            $id = $_POST['id'];
+            // Decrement the quantity, but ensure it doesn't go below 1
+            if ($_SESSION['basket'][$id]['quantity'] > 1) {
+                $_SESSION['basket'][$id]['quantity']--;
+            }
+        }
+
+        // Handle increment
+        if (isset($_POST['increment']) && isset($_POST['id'])) {
+            $id = $_POST['id'];
+            // Increment the quantity
+            $_SESSION['basket'][$id]['quantity']++;
+        }
+
+        // Handle remove item
+        if (isset($_POST['remove']) && isset($_POST['id'])) {
+            $id = $_POST['id'];
+            // Remove the item from the basket
+            unset($_SESSION['basket'][$id]);
+            // Reindex the array to prevent gaps in the keys
+            $_SESSION['basket'] = array_values($_SESSION['basket']);
+        }
+    }
+
     // Calculate the total price from the basket
     if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
         foreach ($_SESSION['basket'] as $item) {
@@ -20,6 +48,7 @@
     <title>Shopping Basket</title>
 </head>
 <body>
+    <?php include 'nav.php'; ?>
     
     <?php if (!isset($_SESSION['basket']) || empty($_SESSION['basket'])): ?>
         <h2>Your basket is empty</h2>
@@ -28,8 +57,8 @@
             <tr>
                 <th>Item</th>
                 <th>Name</th>
-                <th>Quantity</th>
                 <th>Price</th>
+                <th>Quantity</th>
                 <th>Actions</th>
             </tr>
 
@@ -52,6 +81,13 @@
                         <form method="post" style="display:inline;">
                             <input type="hidden" value="<?= $i ?>" name="id">
                             <input type="submit" value="+" name="increment">
+                        </form>
+                    </td>
+                    <td>
+                        <!-- Remove Item -->
+                        <form method="post" style="display:inline;">
+                            <input type="hidden" value="<?= $i ?>" name="id">
+                            <input type="submit" value="Remove" name="remove">
                         </form>
                     </td>
                 </tr>

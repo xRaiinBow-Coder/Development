@@ -49,7 +49,7 @@ var_dump($_SESSION['basket']);  // Debugging the basket content
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home page</title>
-    <link rel="stylesheet" href="home10.css">
+    <link rel="stylesheet" href="home2.css">
 </head>
 <body>
     <?php include 'nav.php'; ?>

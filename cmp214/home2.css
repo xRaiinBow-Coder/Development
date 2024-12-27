@@ -74,7 +74,7 @@
 }
 
 .btn {
-  background-color: forestgreen;
+  background-color: #6F4E37;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -84,5 +84,5 @@
 }
 
 .btn:hover {
-  background-color: darkgreen;
+  background-color: forestgreen;
 }
