@@ -57,7 +57,7 @@ var_dump($_SESSION['basket']);  // Debugging the basket content
     <!-- Upper Box Section with Background -->
     <div class="upperBox">
         <div class="left-side">
-            <h1 class="homeTitle">Tyne Brew</h1>
+            <h1 class="homeTitle" id="Title1" style="color: black;">Tyne Brew</h1>
             <p class="HomeP">Welcome to our coffee shop! Where we make the best coffee on the planet.</p>
         </div>
         <div class="right-side">
