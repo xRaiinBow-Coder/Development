@@ -156,7 +156,6 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
             <h2>Checkout</h2>
             <form method="post" action="chekout.php">
 
-
                 <input type="submit" value="Proceed to Checkout">
             </form>
 
