@@ -67,24 +67,33 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"href="style2.css">
+    <link rel="stylesheet" href="style2.css">
     <title>Login Form</title>
 </head>
 <body>
 <?php include 'nav.php'; ?>
+    
     <h1>Login - Secured</h1>
-    <form method="post">
-        <!-- Include CSRF token in the form -->
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
-        <label for="loginIdentifier">Email or Username</label><br>
-        <input type="text" placeholder="Enter Email or Username..." name="loginIdentifier" id="loginIdentifier" required><br>
-        
-        <label for="loginPassword">Password</label><br>
-        <input type="password" placeholder="Enter Password..." name="loginPassword" id="loginPassword" required><br>
+    <!-- Display username if logged in -->
+    <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+        <p>Welcome, <?= $_SESSION['username'] ?>!</p>
+        <p><a href="checkout.php">Proceed to Checkout</a></p>
+    <?php else: ?>
+        <form method="post">
+            <!-- Include CSRF token in the form -->
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
-        <input type="submit" name="login" value="Login">
-    </form>
+            <label for="loginIdentifier">Email or Username</label><br>
+            <input type="text" placeholder="Enter Email or Username..." name="loginIdentifier" id="loginIdentifier" required><br>
+            
+            <label for="loginPassword">Password</label><br>
+            <input type="password" placeholder="Enter Password..." name="loginPassword" id="loginPassword" required><br>
+
+            <input type="submit" name="login" value="Login">
+        </form>
+    <?php endif; ?>
+
 </body>
 </html>
 
