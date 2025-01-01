@@ -12,7 +12,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
  <li><a href="home.php">Home</a></li>
  <li><a href="register.php">Register</a></li>
  <li><a href="login.php">Log in</a></li>
- <li><a href="">Coffee ☕️</a></li>
+ <li><a href="DisplayProducts.php">Coffee ☕️</a></li>
  <li><a href="ShopingBasket.php">Cart 🛒</a></li>
  </ul>';
  }

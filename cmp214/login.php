@@ -81,7 +81,7 @@ if (isset($_POST['login'])) {
         <p><a href="checkout.php">Proceed to Checkout</a></p>
     <?php else: ?>
         <form method="post">
-            <!-- Include CSRF token in the form -->
+
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
             <label for="loginIdentifier">Email or Username</label><br>
