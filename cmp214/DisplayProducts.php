@@ -19,15 +19,10 @@ if (isset($_POST['add'])) {
     echo "Product with ID: " . htmlspecialchars($productId) . " added to basket.";
 }
 
-$filterColumn = 'id';  
-$filterOrder = 'ASC';  
+$filterColumn = isset($_GET['filter']) ? $_GET['filter'] : 'id';
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['filter'])) {
-    $filterColumn = $_GET['filter'];
-    $filterOrder = $_GET['order'] === 'DESC' ? 'DESC' : 'ASC';
-}
 
-$query = $db->connect()->prepare("SELECT * FROM tbl_Productss ORDER BY $filterColumn $filterOrder");
+$query = $db->connect()->prepare("SELECT * FROM tbl_Productss ORDER BY $filterColumn");
 $query->execute();
 
 $products = array();
@@ -58,6 +53,17 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
     <?php include 'nav.php'; ?>
 
     <h1>All Products</h1>
+    <div class="filter-container">
+        <form method="get" action="">
+            <label for="filter">Sort by:</label>
+            <select name="filter" id="filter">
+                <option value="id" <?= $filterColumn === 'id' ? 'selected' : '' ?>>Default</option>
+                <option value="name" <?= $filterColumn === 'name' ? 'selected' : '' ?>>Name</option>
+                <option value="price" <?= $filterColumn === 'price' ? 'selected' : '' ?>>Price</option>
+            </select>
+            <button type="submit" class="btn">Apply</button>
+        </form>
+    </div>
 
     <section class="products">
         <?php if (empty($products)): ?>
