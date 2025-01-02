@@ -1,26 +1,57 @@
 <?php
 session_start();
+require_once 'DB.php'; 
 
-// Initialize order completion flag
 $orderComplete = false;
 
-// Handle logged-in user checkout form submission
-if (isset($_POST['complete_purchase'])) {
+function saveReceipt(PDO $pdo, $name, $address, $cardNumber, $totalAmount, $purchaser) {
+    try {
+        $query = "INSERT INTO tbl_Reciepts (name, address, card, amount, purchaser) VALUES (:name, :address, :card, :amount, :purchaser)";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute([
+            ':name' => $name,
+            ':address' => $address,
+            ':card' => $cardNumber,
+            ':amount' => $totalAmount,
+            ':purchaser' => $purchaser
+        ]);
+        echo "<p style='color: green;'>Receipt saved successfully for $purchaser.</p>";
+    } catch (PDOException $e) {
+        echo "<p style='color: red;'>Error saving receipt: " . $e->getMessage() . "</p>";
+    }
+}
+
+function calculateTotal($basket) {
+    $total = 0;
+    foreach ($basket as $item) {
+        $total += $item['price'] * $item['quantity'];
+    }
+    return $total;
+}
+
+try {
+    $db = new DB();
+    $pdo = $db->connect(); 
+} catch (PDOException $e) {
+    die("<p style='color: red;'>Database connection failed: " . $e->getMessage() . "</p>");
+}
+
+if (isset($_POST['completePurchase'])) {
     $name = trim($_POST['name']);
     $address = trim($_POST['address']);
-    $card_number = trim($_POST['card_number']);
+    $cardNumber = trim($_POST['card_number']);  
+    $purchaser = $_SESSION['username'] ?? 'Unknown'; 
 
-    // Validate the input fields
-    if (empty($name) || empty($address) || empty($card_number)) {
+    if (empty($name) || empty($address) || empty($cardNumber)) {
         echo "<p style='color: red;'>All fields are required!</p>";
     } else {
-        // Display order summary for logged-in users
+        $totalAmount = calculateTotal($_SESSION['basket'] ?? []);
+        
         echo "<h2>Order Summary</h2>";
         echo "<p><strong>Name:</strong> $name</p>";
         echo "<p><strong>Shipping Address:</strong> $address</p>";
-        echo "<p><strong>Card Number:</strong> ************" . substr($card_number, -4) . "</p>";
+        echo "<p><strong>Card Number:</strong> ************" . substr($cardNumber, -4) . "</p>";
 
-        // Display basket items
         if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
             echo "<h3>Items in your basket:</h3>";
             foreach ($_SESSION['basket'] as $item) {
@@ -28,30 +59,31 @@ if (isset($_POST['complete_purchase'])) {
             }
         }
 
-        // Clear the basket after checkout
-        unset($_SESSION['basket']);
-        echo "<h3>Thank you for your purchase, " . $_SESSION['username'] . "!</h3>";
+        echo "<h3>Total Amount: £" . number_format($totalAmount, 2) . "</h3>";
+        unset($_SESSION['basket']); 
+        echo "<h3>Thank you for your purchase, $purchaser!</h3>";
+
+        saveReceipt($pdo, $name, $address, substr($cardNumber, -4), $totalAmount, $purchaser);
         $orderComplete = true;
     }
 }
 
-// Handle guest checkout form submission
-if (isset($_POST['guest_checkout_submit'])) {
+if (isset($_POST['guestCheckoutSubmit'])) {
     $name = trim($_POST['name']);
     $address = trim($_POST['address']);
-    $card_number = trim($_POST['card_number']);
+    $cardNumber = trim($_POST['card_number']); 
+    $purchaser = 'Guest'; 
 
-    // Validate the input fields
-    if (empty($name) || empty($address) || empty($card_number)) {
+    if (empty($name) || empty($address) || empty($cardNumber)) {
         echo "<p style='color: red;'>All fields are required!</p>";
     } else {
-        // Display order summary for guest users
+        $totalAmount = calculateTotal($_SESSION['basket'] ?? []);
+        
         echo "<h2>Order Summary</h2>";
         echo "<p><strong>Name:</strong> $name</p>";
         echo "<p><strong>Shipping Address:</strong> $address</p>";
-        echo "<p><strong>Card Number:</strong> ************" . substr($card_number, -4) . "</p>";
+        echo "<p><strong>Card Number:</strong> ************" . substr($cardNumber, -4) . "</p>";
 
-        // Display basket items
         if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
             echo "<h3>Items in your basket:</h3>";
             foreach ($_SESSION['basket'] as $item) {
@@ -59,9 +91,11 @@ if (isset($_POST['guest_checkout_submit'])) {
             }
         }
 
-        // Clear the basket after checkout
-        unset($_SESSION['basket']);
+        echo "<h3>Total Amount: £" . number_format($totalAmount, 2) . "</h3>";
+        unset($_SESSION['basket']); 
         echo "<h3>Thank you for your purchase, Guest!</h3>";
+
+        saveReceipt($pdo, $name, $address, substr($cardNumber, -4), $totalAmount, $purchaser);
         $orderComplete = true;
     }
 }
@@ -80,9 +114,7 @@ if (isset($_POST['guest_checkout_submit'])) {
         <p>Your order has been successfully placed. You will receive a confirmation email shortly.</p>
         <p><a href="ShopingBasket.php">Return to the shop</a></p>
     <?php else: ?>
-        <h2>Checkout</h2>
-
-        <!-- For logged-in users -->
+        <h2>Checkout Form</h2>
         <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']): ?>
             <form method="post" action="">
                 <label for="name">Full Name:</label><br>
@@ -94,9 +126,8 @@ if (isset($_POST['guest_checkout_submit'])) {
                 <label for="card_number">Card Number:</label><br>
                 <input type="text" name="card_number" id="card_number" required><br><br>
 
-                <input type="submit" name="complete_purchase" value="Complete Purchase">
+                <input type="submit" name="completePurchase" value="Complete Purchase">
             </form>
-        <!-- For guest users -->
         <?php else: ?>
             <form method="post" action="">
                 <label for="name">Full Name:</label><br>
@@ -108,7 +139,7 @@ if (isset($_POST['guest_checkout_submit'])) {
                 <label for="card_number">Card Number:</label><br>
                 <input type="text" name="card_number" id="card_number" required><br><br>
 
-                <input type="submit" name="guest_checkout_submit" value="Complete Purchase">
+                <input type="submit" name="guestCheckoutSubmit" value="Complete Purchase">
             </form>
         <?php endif; ?>
     <?php endif; ?>

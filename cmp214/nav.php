@@ -4,7 +4,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     $navigation = '<ul class="NAV">
  <li><a href="home.php">Home</a></li>
  <li><a href="logout.php">Log out</a></li>
-<li><a href="ShopingBasket.php">Shopping cart 🛒</a></li>
+ <li><a href="DisplayProducts.php">Coffee ☕️</a></li>
+ <li><a href="ShopingBasket.php">Shopping cart 🛒</a></li>
  </ul>';
  } else {
     // Navigation for guests

@@ -12,12 +12,12 @@ $db = new DB;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"href="style2.css">
+    <link rel="stylesheet"href="Register.css">
     <title>Document</title>
 </head>
 <body>
     <?php include 'nav.php';?>
-    <form method="post">
+    <form method="post" class="RegisterForm">
         <input type="email" placeholder="Email..." name="email">
         <input type="text" placeholder="Username..." name="username">
         <input type="password" placeholder="Password" name="password">
