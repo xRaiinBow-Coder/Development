@@ -64,6 +64,7 @@ if(isset($_POST['upload'])) {
     <title>Create Product</title>
 </head>
 <body>
+<?php include 'nav.php'; ?>
     <h1>Create A New Product</h1>
 
     <form method="post" action="create.php" enctype="multipart/form-data">

@@ -14,15 +14,16 @@ try {
     die("<p style='color: red;'>Database connection failed: " . $e->getMessage() . "</p>");
 }
 
+
 function getPurchaseHistory(PDO $pdo, $username = null) {
     try {
         if ($username) {
-            
+           
             $query = "SELECT * FROM tbl_Reciepts WHERE purchaser = :username ORDER BY id DESC";
             $stmt = $pdo->prepare($query);
             $stmt->execute([':username' => $username]);
         } else {
-           
+            
             $query = "SELECT * FROM tbl_Reciepts ORDER BY id DESC";
             $stmt = $pdo->prepare($query);
             $stmt->execute();
@@ -37,6 +38,7 @@ function getPurchaseHistory(PDO $pdo, $username = null) {
 
 $username = $_SESSION['username']; 
 $isAdmin = $_SESSION['role'] === 'admin'; 
+
 
 $purchaseHistory = getPurchaseHistory($pdo, $isAdmin ? null : $username);
 ?>
@@ -58,26 +60,37 @@ $purchaseHistory = getPurchaseHistory($pdo, $isAdmin ? null : $username);
         <h2>Your Purchase History</h2>
     <?php endif; ?>
 
-    <?php if (!empty($purchaseHistory)): ?>
-        <?php foreach ($purchaseHistory as $purchase): ?>
-            <div style="border: 1px solid #ddd; margin: 10px; padding: 10px;">
-                <h3>Order ID: <?php echo htmlspecialchars($purchase['id']); ?></h3>
-                <p><strong>Name:</strong> <?php echo htmlspecialchars($purchase['name']); ?></p>
-                <p><strong>Shipping Address:</strong> <?php echo htmlspecialchars($purchase['address']); ?></p>
-                <p><strong>Amount:</strong> £<?php echo number_format($purchase['amount'], 2); ?></p>
-                <p><strong>Card (Last 4 Digits):</strong> ************<?php echo substr($purchase['card'], -4); ?></p>
-
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Amount</th>
+                <th>Card (Last 4 Digits)</th>
                 <?php if ($isAdmin): ?>
-                    <p>
-                        <a href="editPurchase.php?id=<?php echo $purchase['id']; ?>">Edit</a> | 
-                        <a href="deletePurchase.php?id=<?php echo $purchase['id']; ?>">Delete</a>
-                    </p>
+                    <th>Actions</th>
                 <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No purchase history found.</p>
-    <?php endif; ?>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($purchaseHistory as $purchase): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($purchase['id']); ?></td>
+                    <td><?php echo htmlspecialchars($purchase['name']); ?></td>
+                    <td><?php echo htmlspecialchars($purchase['address']); ?></td>
+                    <td>£<?php echo number_format($purchase['amount'], 2); ?></td>
+                    <td>************<?php echo substr($purchase['card'], -4); ?></td>
+                    <?php if ($isAdmin): ?>
+                        <td>
+                            <a href="editPurchase.php?id=<?php echo $purchase['id']; ?>">Edit</a> | 
+                            <a href="deletePurchase.php?id=<?php echo $purchase['id']; ?>">Delete</a>
+                        </td>
+                    <?php endif; ?>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 
     <?php if (!$isAdmin): ?>
         <p><a href="ShopingBasket.php">Return to the shop</a></p>

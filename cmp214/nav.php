@@ -7,6 +7,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             <li><a href="Sales.php">Previous Sales</a></li>
             <li><a href="logout.php">Log out</a></li>
             <li><a href="DisplayProducts.php">Coffee ☕️</a></li>
+            <li><a href="create.php">Create Order</a></li>
         </ul>';
     } else {
         $navigation = '<ul class="NAV">
