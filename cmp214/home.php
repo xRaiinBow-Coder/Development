@@ -19,7 +19,6 @@ if (isset($_POST['add'])) {
     echo "Product with ID: " . $id . " added to basket.";
 }
 
-// Modify query to fetch only top 3 products
 $query = $db->connect()->prepare("SELECT * FROM tbl_Productss ORDER BY id DESC LIMIT 3"); // Corrected table name
 $query->execute();
 
@@ -29,17 +28,16 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
     $id = $row["id"];
     $name = $row['name'];
     $image = $row['image'];
-    $description = $row['description'];  // Fetch description
-    $price = $row['price'];  // Fetch price
+    $description = $row['description'];  
+    $price = $row['price'];  
 
-    // Ensure price is valid (default to 0.00 if NULL)
-    $price = ($price === null) ? 0.00 : (float)$price;  // Handle null price by defaulting to 0.00
+    $price = ($price === null) ? 0.00 : (float)$price;  
 
-    // Pass the description and price to the Product constructor
+
     $products[] = new Product($id, $name, $image, $description, $price);
 }
 
-var_dump($_SESSION['basket']);  // Debugging the basket content
+var_dump($_SESSION['basket']);  
 
 ?>
 
@@ -54,7 +52,6 @@ var_dump($_SESSION['basket']);  // Debugging the basket content
 <body>
     <?php include 'nav.php'; ?>
 
-    <!-- Upper Box Section with Background -->
     <div class="upperBox">
         <div class="left-side">
             <h1 class="homeTitle" id="Title1" style="color: black;">Tyne Brew</h1>
@@ -65,7 +62,6 @@ var_dump($_SESSION['basket']);  // Debugging the basket content
         </div>
     </div>
 
-    <!-- Loop to display the top 3 products -->
     <section class="products">
         <?php foreach ($products as $p): ?>
             <div class="product-container">
@@ -73,7 +69,7 @@ var_dump($_SESSION['basket']);  // Debugging the basket content
                 <div class="product-info">
                     <h3><?= $p->name() ?></h3>
                     <p><?= $p->description() ?></p>
-                    <p>Price: $<?= number_format($p->price(), 2) ?></p>  <!-- Display price -->
+                    <p>Price: $<?= number_format($p->price(), 2) ?></p>  
                 </div>
                 <form method="post" action="">
                     <input type="hidden" value="<?= $p->id() ?>" name="id">

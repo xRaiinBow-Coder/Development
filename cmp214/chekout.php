@@ -99,6 +99,8 @@ if (isset($_POST['guestCheckoutSubmit'])) {
         $orderComplete = true;
     }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -109,6 +111,8 @@ if (isset($_POST['guestCheckoutSubmit'])) {
     <title>Checkout</title>
 </head>
 <body>
+<?php include 'nav.php'; ?>
+
     <?php if ($orderComplete): ?>
         <h1>Thank you for your purchase!</h1>
         <p>Your order has been successfully placed. You will receive a confirmation email shortly.</p>
@@ -127,6 +131,7 @@ if (isset($_POST['guestCheckoutSubmit'])) {
                 <input type="text" name="card_number" id="card_number" required><br><br>
 
                 <input type="submit" name="completePurchase" value="Complete Purchase">
+
             </form>
         <?php else: ?>
             <form method="post" action="">

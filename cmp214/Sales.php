@@ -2,7 +2,7 @@
 session_start();
 require_once 'DB.php';
 
-// Ensure the user is logged in
+
 if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
     die("<p style='color: red;'>You must be logged in to view the purchase history.</p>");
 }
@@ -14,16 +14,15 @@ try {
     die("<p style='color: red;'>Database connection failed: " . $e->getMessage() . "</p>");
 }
 
-// Function to fetch purchase history (all for admins, specific for users)
 function getPurchaseHistory(PDO $pdo, $username = null) {
     try {
         if ($username) {
-            // If logged in as user, get their purchase history
+            
             $query = "SELECT * FROM tbl_Reciepts WHERE purchaser = :username ORDER BY id DESC";
             $stmt = $pdo->prepare($query);
             $stmt->execute([':username' => $username]);
         } else {
-            // If logged in as admin, get all purchase history
+           
             $query = "SELECT * FROM tbl_Reciepts ORDER BY id DESC";
             $stmt = $pdo->prepare($query);
             $stmt->execute();

@@ -2,19 +2,17 @@
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
-
 session_start();
 
 require 'DB.php';
 
-
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); 
+if (empty($_SESSION['csrfToken'])) {
+    $_SESSION['csrfToken'] = bin2hex(random_bytes(32)); 
 }
 
 if (isset($_POST['login'])) {
 
-    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    if ($_POST['csrfToken'] !== $_SESSION['csrfToken']) {
         die("CSRF token validation failed.");
     }
 
@@ -34,7 +32,7 @@ if (isset($_POST['login'])) {
         exit;
     }
 
-   
+
     $query = $conn->prepare('SELECT * FROM tbl_users WHERE email = :loginIdentifier OR username = :loginIdentifier');
     $query->bindParam(':loginIdentifier', $loginIdentifier, PDO::PARAM_STR);
     $query->execute();
@@ -42,7 +40,6 @@ if (isset($_POST['login'])) {
     if ($query->rowCount() > 0) {
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-       
         if (password_verify($loginPassword, $user['password'])) {
             session_regenerate_id(true); 
 
@@ -50,9 +47,9 @@ if (isset($_POST['login'])) {
             $_SESSION['username'] = $user['username'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['uuid'] = $user['uuid'];
-            $_SESSION['role'] = $user['Role']; 
+            $_SESSION['role'] = $user['role']; 
 
-           
+    
             if ($user['role'] === 'admin') {
                 header("Location: DisplayProducts.php");
             } else {
@@ -81,14 +78,13 @@ if (isset($_POST['login'])) {
     
     <h1>Login - Secured</h1>
 
-    
     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <p>Welcome, <?= $_SESSION['username'] ?>!</p>
         <p><a href="checkout.php">Proceed to Checkout</a></p>
     <?php else: ?>
         <form method="post">
 
-            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+            <input type="hidden" name="csrfToken" value="<?php echo $_SESSION['csrfToken']; ?>">
 
             <label for="loginIdentifier">Email or Username</label><br>
             <input type="text" placeholder="Enter Email or Username..." name="loginIdentifier" id="loginIdentifier" required><br>

@@ -7,14 +7,13 @@ class Product {
     private $price;
     private $quantity;
 
-    // Updated constructor to handle price and description
     public function __construct($id, $name, $image, $description, $price, $quantity = 1) {
         $this->id = $id;
         $this->name = $name;
         $this->image = $image;
         $this->description = $description;
-        $this->price = $price;  // Store price
-        $this->quantity = $quantity;  // Default to 1 if not specified
+        $this->price = $price;  
+        $this->quantity = $quantity;  
     }
 
     public function id() {

@@ -1,12 +1,9 @@
 <?php 
 session_start();
 
-// Initialize totalPrice to 0
 $totalPrice = 0;
 
-// Handle quantity update or item removal
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Handle decrement
     if (isset($_POST['decrement']) && isset($_POST['id'])) {
         $id = $_POST['id'];
         if ($_SESSION['basket'][$id]['quantity'] > 1) {
@@ -14,66 +11,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Handle increment
     if (isset($_POST['increment']) && isset($_POST['id'])) {
         $id = $_POST['id'];
         $_SESSION['basket'][$id]['quantity']++;
     }
 
-    // Handle remove item
     if (isset($_POST['remove']) && isset($_POST['id'])) {
         $id = $_POST['id'];
         unset($_SESSION['basket'][$id]);
         $_SESSION['basket'] = array_values($_SESSION['basket']);
     }
 
-    // Handle purchase decision (login, guest, or register)
     if (isset($_POST['purchase'])) {
-        $_SESSION['purchase_option'] = true;
+        $_SESSION['purchaseOption'] = true;
     }
 
-    // If 'continue as guest' is selected, display the checkout form
     if (isset($_POST['action']) && $_POST['action'] == 'guest') {
-        $_SESSION['continue_as_guest'] = true;
-        unset($_SESSION['purchase_option']);
+        $_SESSION['continueAsGuest'] = true;
+        unset($_SESSION['purchaseOption']);
+        header("Location: chekout.php");
+        exit();
     }
 
-    // If 'log in' is selected, redirect to login page with redirect to checkout
     if (isset($_POST['action']) && $_POST['action'] == 'login') {
         header("Location: login.php?redirect=checkout");
         exit();
     }
 
-    // If 'register' is selected, redirect to registration page
     if (isset($_POST['action']) && $_POST['action'] == 'register') {
         header("Location: register.php");
         exit();
     }
 
-    // Cancel checkout action
-    if (isset($_POST['cancel_checkout'])) {
-        unset($_SESSION['continue_as_guest']);
+    if (isset($_POST['cancelCheckout'])) {
+        unset($_SESSION['continueAsGuest']);
         header("Location: ShopingBasket.php");
         exit();
     }
 
-    // Handle guest checkout form submission
-    if (isset($_POST['guest_checkout_submit'])) {
+    if (isset($_POST['guestCheckoutSubmit'])) {
         $name = trim($_POST['name']);
         $address = trim($_POST['address']);
-        $card_number = trim($_POST['card_number']);
+        $cardNumber = trim($_POST['cardNumber']);
 
-        // Validate the input fields
-        if (empty($name) || empty($address) || empty($card_number)) {
+        if (empty($name) || empty($address) || empty($cardNumber)) {
             echo "<p style='color: red;'>All fields are required!</p>";
         } else {
-            // Display order summary
+            
             echo "<h2>Order Summary</h2>";
             echo "<p><strong>Name:</strong> $name</p>";
             echo "<p><strong>Shipping Address:</strong> $address</p>";
-            echo "<p><strong>Card Number:</strong> ************" . substr($card_number, -4) . "</p>";
+            echo "<p><strong>Card Number:</strong> ************" . substr($cardNumber, -4) . "</p>";
 
-            // Display basket items
             if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
                 echo "<h3>Items in your basket:</h3>";
                 foreach ($_SESSION['basket'] as $item) {
@@ -81,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
 
-            // Clear the basket after checkout
             unset($_SESSION['basket']);
             echo "<h3>Thank you for your purchase!</h3>";
             exit();
@@ -89,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Calculate the total price from the basket
 if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
     foreach ($_SESSION['basket'] as $item) {
         $totalPrice += $item['price'] * $item['quantity'];
@@ -155,37 +142,25 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
         <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
             <h2>Checkout</h2>
             <form method="post" action="chekout.php">
-
                 <input type="submit" value="Proceed to Checkout">
             </form>
 
             <form method="post">
-                <input type="submit" name="cancel_checkout" value="Cancel Checkout">
+                <input type="submit" name="cancelCheckout" value="Cancel Checkout">
             </form>
-        <?php elseif (isset($_SESSION['continue_as_guest'])): ?>
+        <?php elseif (isset($_SESSION['continueAsGuest'])): ?>
             <h2>Guest Checkout</h2>
             <form method="post" action="chekout.php">
-                <label for="name">Full Name:</label><br>
-                <input type="text" name="name" id="name" required><br><br>
-
-                <label for="address">Shipping Address:</label><br>
-                <textarea name="address" id="address" rows="4" required></textarea><br><br>
-
-                <label for="card_number">Card Number:</label><br>
-                <input type="text" name="card_number" id="card_number" required><br><br>
-
-                <input type="submit" name="guest_checkout_submit" value="Complete Purchase">
             </form>
-
             <form method="post">
-                <input type="submit" name="cancel_checkout" value="Cancel Checkout">
+                <input type="submit" name="cancelCheckout" value="Cancel Checkout">
             </form>
         <?php else: ?>
             <form method="post">
                 <input type="submit" name="purchase" value="Proceed to Purchase">
             </form>
 
-            <?php if (isset($_SESSION['purchase_option']) && $_SESSION['purchase_option']): ?>
+            <?php if (isset($_SESSION['purchaseOption']) && $_SESSION['purchaseOption']): ?>
                 <h3>Choose an option:</h3>
                 <form method="post">
                     <input type="radio" name="action" value="login" id="login" required>
