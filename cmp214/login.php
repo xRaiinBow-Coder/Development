@@ -2,18 +2,18 @@
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
-// Start the session at the beginning of the script
+
 session_start();
 
 require 'DB.php';
 
-// Create a CSRF token if one doesn't exist
+
 if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); // Create a random token
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); 
 }
 
 if (isset($_POST['login'])) {
-    // CSRF Token validation
+
     if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("CSRF token validation failed.");
     }
@@ -34,7 +34,7 @@ if (isset($_POST['login'])) {
         exit;
     }
 
-    // Check if email or username exists
+   
     $query = $conn->prepare('SELECT * FROM tbl_users WHERE email = :loginIdentifier OR username = :loginIdentifier');
     $query->bindParam(':loginIdentifier', $loginIdentifier, PDO::PARAM_STR);
     $query->execute();
@@ -42,16 +42,22 @@ if (isset($_POST['login'])) {
     if ($query->rowCount() > 0) {
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-        // Verify password
+       
         if (password_verify($loginPassword, $user['password'])) {
-            session_regenerate_id(true); // Regenerate session ID to prevent session fixation
+            session_regenerate_id(true); 
 
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $user['username'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['uuid'] = $user['uuid'];
+            $_SESSION['role'] = $user['Role']; 
 
-            header("Location: home.php");
+           
+            if ($user['role'] === 'admin') {
+                header("Location: DisplayProducts.php");
+            } else {
+                header("Location: home.php");
+            }
             exit;
         } else {
             echo "Incorrect password.";
@@ -75,7 +81,7 @@ if (isset($_POST['login'])) {
     
     <h1>Login - Secured</h1>
 
-    <!-- Display username if logged in -->
+    
     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <p>Welcome, <?= $_SESSION['username'] ?>!</p>
         <p><a href="checkout.php">Proceed to Checkout</a></p>

@@ -1,23 +1,33 @@
 <?php
 session_start();
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    $navigation = '<ul class="NAV">
- <li><a href="home.php">Home</a></li>
- <li><a href="logout.php">Log out</a></li>
- <li><a href="DisplayProducts.php">Coffee ☕️</a></li>
- <li><a href="ShopingBasket.php">Shopping cart 🛒</a></li>
- </ul>';
- } else {
+    if ($_SESSION['role'] === 'admin') {
+        $navigation = '<ul class="NAV">
+            <li><a href="home.php">Home</a></li>
+            <li><a href="Sales.php">Previous Sales</a></li>
+            <li><a href="logout.php">Log out</a></li>
+        </ul>';
+    } else {
+        $navigation = '<ul class="NAV">
+            <li><a href="home.php">Home</a></li>
+            <li><a href="logout.php">Log out</a></li>
+            <li><a href="display_products.php">Coffee ☕️</a></li>
+            <li><a href="shopping_basket.php">Shopping Cart 🛒</a></li>
+            <li><a href="Sales.php">Previous Sales</a></li>
+        </ul>';
+    }
+} else {
     // Navigation for guests
     $navigation = '<ul class="NAV">
- <li><a href="home.php">Home</a></li>
- <li><a href="register.php">Register</a></li>
- <li><a href="login.php">Log in</a></li>
- <li><a href="DisplayProducts.php">Coffee ☕️</a></li>
- <li><a href="ShopingBasket.php">Cart 🛒</a></li>
- </ul>';
- }
+        <li><a href="home.php">Home</a></li>
+        <li><a href="register.php">Register</a></li>
+        <li><a href="login.php">Log in</a></li>
+        <li><a href="display_products.php">Coffee ☕️</a></li>
+        <li><a href="shopping_basket.php">Cart 🛒</a></li>
+    </ul>';
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
