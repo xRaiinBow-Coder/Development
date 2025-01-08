@@ -72,7 +72,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                 <div class="product-info">
                     <h3><?= $p->name() ?></h3>
                     <p><?= $p->description() ?></p>
-                    <p>Price: $<?= number_format($p->price(), 2) ?></p>  
+                    <p>Price: £<?= number_format($p->price(), 2) ?></p>  
                 </div>
                 <form method="post" action="">
                     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->

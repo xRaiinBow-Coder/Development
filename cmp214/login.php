@@ -5,8 +5,9 @@ error_reporting(E_ALL);
 
 session_start();
 
-require 'DB.php';
 include 'SessionHacking.php';
+require 'DB.php';
+
 
 
 if (isset($_POST['login'])) {
@@ -70,20 +71,71 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" >
     <title>Login Form</title>
+    <style>
+
+        body {
+            background-color: #228B22
+        }
+
+        .LogInForm {
+            position: absolute;  
+            top: 30%;           
+            left: 50%;           
+            transform: translateX(-50%); 
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px black;
+            background-color: #6F4E37;
+            padding: 20px;   
+            width: 600px;    
+            display: flex;   
+            flex-direction: column;  
+            gap: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        input[type="submit"] {
+            background-color:  #228B22;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 50%;      
+            display: block;  
+            margin: 0 auto;  
+        }
+
+        input[type="submit"]:hover {
+            background-color: white;
+            color: black;
+        }
+
+        h1 {
+            margin-top: 75px;
+            font-weight: bold;
+            color: #fff;
+            position: absolute;  
+            top: 15%;           
+            left: 45%;           
+        }
+
+
+
+    </style>
 </head>
 <body>
 <?php include 'nav.php'; ?>
     
-    <h1>Login - Secured</h1>
+    <h1>Login Form</h1>
 
     
     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <p>Welcome, <?= $_SESSION['username'] ?>!</p>
         <p><a href="chekout.php">Proceed to Checkout</a></p>
     <?php else: ?>
-        <form method="post">
+        <form method="post" class="LogInForm">
 
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 

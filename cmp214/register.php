@@ -13,15 +13,55 @@ $db = new DB;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Register.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="">
+    <title>Registration</title>
+    <style>
+
+    body {
+        background-color: #228B22;
+    }
+
+    .RegisterForm {
+        position: absolute;  
+        top: 30%;           
+        left: 50%;           
+        transform: translateX(-50%); 
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px black;
+        background-color: #6F4E37;
+        padding: 20px;   
+        width: 600px;    
+        display: flex;   
+        flex-direction: column;  
+        gap: 10px;
+        backdrop-filter: blur(10px);
+    }
+
+    input[type="submit"] {
+        background-color:  #228B22;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        width: 50%;      
+        display: block;  
+        margin: 0 auto;  
+    }
+
+    input[type="submit"]:hover {
+        background-color: white;
+        color: black;
+    }
+
+    </style>
 </head>
 <body>
     <?php include 'nav.php'; ?>
     <form method="post" class="RegisterForm">
-    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->
+        <input type="text" placeholder="Username..." name="username" required>    
         <input type="email" placeholder="Email..." name="email" required>
-        <input type="text" placeholder="Username..." name="username" required>
         <input type="password" placeholder="Password" name="password" required>
         <input type="password" placeholder="Password Confirm" name="confpass" required>
         
