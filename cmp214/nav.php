@@ -5,26 +5,26 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         $navigation = '<ul class="NAV">
             <li><a href="home.php">Home</a></li>
             <li><a href="Sales.php">Previous Sales</a></li>
-            <li><a href="logout.php">Log out</a></li>
-            <li><a href="DisplayProducts.php">Coffee ☕️</a></li>
+            <li><a href="DisplayProducts.php">Products ☕️</a></li>
             <li><a href="create.php">Create Order</a></li>
+            <li><a href="logout.php">Log out</a></li>
         </ul>';
     } else {
         $navigation = '<ul class="NAV">
             <li><a href="home.php">Home</a></li>
-            <li><a href="logout.php">Log out</a></li>
-            <li><a href="DisplayProducts.php">Coffee ☕️</a></li>
+            <li><a href="DisplayProducts.php">Products ☕️</a></li>
             <li><a href="ShopingBasket.php">Shopping Cart 🛒</a></li>
             <li><a href="Sales.php">Previous Sales</a></li>
+            <li><a href="logout.php">Log out</a></li>
         </ul>';
     }
 } else {
 
     $navigation = '<ul class="NAV">
         <li><a href="home.php">Home</a></li>
+        <li><a href="DisplayProducts.php">Products ☕️</a></li>
         <li><a href="register.php">Register</a></li>
         <li><a href="login.php">Log in</a></li>
-        <li><a href="DisplayProducts.php">Coffee ☕️</a></li>
         <li><a href="ShopingBasket.php">Cart 🛒</a></li>
     </ul>';
 }
