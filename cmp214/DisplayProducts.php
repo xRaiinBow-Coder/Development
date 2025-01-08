@@ -80,6 +80,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                     <form method="post" action="">
                         <input type="hidden" name="id" value="<?= htmlspecialchars($product->id(), ENT_QUOTES, 'UTF-8') ?>">
                         <input type="submit" class="btn" name="add" value="Add to Basket">
+                        
                     </form>
                 </div>
             <?php endforeach; ?>

@@ -19,7 +19,6 @@ if (isset($_POST['add'])) {
     echo "Product with ID: " . $id . " added to basket.";
 }
 
-
 $query = $db->connect()->prepare("SELECT * FROM tbl_Productss ORDER BY id DESC LIMIT 3"); // Corrected table name
 $query->execute();
 
@@ -32,14 +31,10 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
     $description = $row['description'];  
     $price = $row['price'];  
 
-   
-    $price = ($price === null) ? 0.00 : (float)$price;  
+    $price = ($price === null) ? 0.00 : (float)$price;
 
-   
     $products[] = new Product($id, $name, $image, $description, $price);
 }
-
-var_dump($_SESSION['basket']);  
 
 ?>
 
@@ -54,7 +49,6 @@ var_dump($_SESSION['basket']);
 <body>
     <?php include 'nav.php'; ?>
 
-    
     <div class="upperBox">
         <div class="left-side">
             <h1 class="homeTitle" id="Title1" style="color: black;">Tyne Brew</h1>
@@ -65,7 +59,6 @@ var_dump($_SESSION['basket']);
         </div>
     </div>
 
-   
     <section class="products">
         <?php foreach ($products as $p): ?>
             <div class="product-container">
@@ -78,7 +71,8 @@ var_dump($_SESSION['basket']);
                 <form method="post" action="">
                     <input type="hidden" value="<?= $p->id() ?>" name="id">
                     <input type="submit" class="btn" name="add" value="Add to Basket">
-                    <input type="submit" class="btn" name="add" value="View Item Info">
+                    
+                    <input type="submit" class="btn" name="view" value="Info" formaction="ViewInfo.php?product_id=<?= $p->id() ?>">
                 </form>
             </div>
         <?php endforeach; ?>
