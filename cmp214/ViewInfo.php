@@ -1,6 +1,7 @@
 <?php
 session_start();  
 
+include 'SessionHacking.php';
 require 'DB.php';
 require 'product.php';
 
@@ -18,6 +19,10 @@ if (isset($_POST['id'])) {
 
     // Fetch the product description
     $product = $query->fetch(PDO::FETCH_ASSOC);
+
+    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
 
     if ($product) {
         $description = $product['description']; // Now you have only the description
@@ -58,6 +63,7 @@ if (isset($_POST['id'])) {
 
     <section class="item">
         <div class="product-container">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->
             <h2>Product Description</h2>
             <p><strong>Description:</strong> <?= $description ?></p>
         </div>

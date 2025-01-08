@@ -1,8 +1,9 @@
 <?php
-
 ini_set("display_errors", 1);
 session_start();  
 
+
+include 'SessionHacking.php';
 require 'DB.php';
 require 'product.php';
 require 'basketFunctions.php';
@@ -14,6 +15,11 @@ if (!isset($_SESSION['basket'])) {
 }
 
 if (isset($_POST['add'])) {
+    // CSRF token validation
+    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
+
     $id = $_POST['id'];  
     add($db, $id);  
     echo "Product with ID: " . $id . " added to basket.";
@@ -69,6 +75,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                     <p>Price: $<?= number_format($p->price(), 2) ?></p>  
                 </div>
                 <form method="post" action="">
+                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->
                     <input type="hidden" value="<?= $p->id() ?>" name="id">
                     <input type="submit" class="btn" name="add" value="Add to Basket">
                     

@@ -6,11 +6,8 @@ error_reporting(E_ALL);
 session_start();
 
 require 'DB.php';
+include 'SessionHacking.php';
 
-
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); 
-}
 
 if (isset($_POST['login'])) {
 
@@ -84,7 +81,7 @@ if (isset($_POST['login'])) {
     
     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <p>Welcome, <?= $_SESSION['username'] ?>!</p>
-        <p><a href="checkout.php">Proceed to Checkout</a></p>
+        <p><a href="chekout.php">Proceed to Checkout</a></p>
     <?php else: ?>
         <form method="post">
 

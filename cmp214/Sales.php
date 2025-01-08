@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+include 'SessionHacking.php';
 require_once 'DB.php';
 
 
@@ -55,7 +57,7 @@ $purchaseHistory = getPurchaseHistory($pdo, $isAdmin ? null : $username);
     <h1>Welcome, <?php echo htmlspecialchars($username); ?>!</h1>
 
     <?php if ($isAdmin): ?>
-        <h2>Admin - View All Purchase History</h2>
+        <h2>All Purchase History</h2>
     <?php else: ?>
         <h2>Your Purchase History</h2>
     <?php endif; ?>
@@ -83,8 +85,8 @@ $purchaseHistory = getPurchaseHistory($pdo, $isAdmin ? null : $username);
                     <td>************<?php echo substr($purchase['card'], -4); ?></td>
                     <?php if ($isAdmin): ?>
                         <td>
-                            <a href="editPurchase.php?id=<?php echo $purchase['id']; ?>">Edit</a> | 
-                            <a href="deletePurchase.php?id=<?php echo $purchase['id']; ?>">Delete</a>
+                            <a href="Adminedit.php?id=<?php echo $purchase['id']; ?>">Edit</a> | 
+                            <a href="Admindelete.php?id=<?php echo $purchase['id']; ?>">Delete</a>
                         </td>
                     <?php endif; ?>
                 </tr>

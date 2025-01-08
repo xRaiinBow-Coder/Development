@@ -1,8 +1,16 @@
 <?php
 session_start();
+
+include 'SessionHacking.php';
 require_once 'DB.php'; 
 
+
 $orderComplete = false;
+
+if (isset($_POST['cancelCheckout'])) {
+    header("Location: ShopingBasket.php"); 
+    exit();
+}
 
 function saveReceipt(PDO $pdo, $name, $address, $cardNumber, $totalAmount, $purchaser) {
     try {
@@ -37,13 +45,19 @@ try {
 }
 
 if (isset($_POST['completePurchase'])) {
-    $name = trim($_POST['name']);
-    $address = trim($_POST['address']);
+    $name = htmlspecialchars(trim($_POST['name']), ENT_QUOTES, 'UTF-8');
+    $address = htmlspecialchars(trim($_POST['address']), ENT_QUOTES, 'UTF-8');
     $cardNumber = trim($_POST['card_number']);  
     $purchaser = $_SESSION['username'] ?? 'Unknown'; 
 
+    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
+
     if (empty($name) || empty($address) || empty($cardNumber)) {
         echo "<p>Please fill in all fields</p>";
+    } elseif (!preg_match("/^\d{16}$/", $cardNumber)) { 
+        echo "<p class='error'>Invalid card number. Please enter a valid 16-digit card number.</p>";
     } else {
         $totalAmount = calculateTotal($_SESSION['basket'] ?? []);
         
@@ -70,13 +84,16 @@ if (isset($_POST['completePurchase'])) {
 }
 
 if (isset($_POST['guestCheckoutSubmit'])) {
-    $name = trim($_POST['name']);
-    $address = trim($_POST['address']);
+    $name = htmlspecialchars(trim($_POST['name']), ENT_QUOTES, 'UTF-8');
+    $address = htmlspecialchars(trim($_POST['address']), ENT_QUOTES, 'UTF-8');
     $cardNumber = trim($_POST['card_number']); 
     $purchaser = 'Guest'; 
 
+    // Input validation
     if (empty($name) || empty($address) || empty($cardNumber)) {
         echo "<p>Please fill in all fields</p>";
+    } elseif (!preg_match("/^\d{16}$/", $cardNumber)) { 
+        echo "<p class='error';'>Invalid card number. Please enter a valid 16-digit card number.</p>";
     } else {
         $totalAmount = calculateTotal($_SESSION['basket'] ?? []);
 
@@ -274,6 +291,32 @@ if (isset($_POST['guestCheckoutSubmit'])) {
             right: 20px;               
             z-index: 1000;            
         }
+
+        .cancelButton {
+            background-color: #ff4747;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .ButtonsCheckout {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .error{
+            color: red;               
+            padding: 15px;                 
+            margin: 10px 0;           
+            position: fixed;           
+            bottom: 20px;             
+            right: 20px;               
+            z-index: 1000;  
+        }
 </style>
 
     <?php if ($orderComplete): ?>
@@ -286,30 +329,36 @@ if (isset($_POST['guestCheckoutSubmit'])) {
         <h2>Checkout Form</h2>
         <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']): ?>
             <form method="post" action="">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->
                 <label for="name">Full Name:</label><br>
-                <input type="text" name="name" id="name" required><br><br>
+                <input type="text" name="name" id="name" ><br><br>
 
                 <label for="address">Shipping Address:</label><br>
-                <textarea name="address" id="address" rows="4" required></textarea><br><br>
+                <textarea name="address" id="address" rows="4" ></textarea><br><br>
 
                 <label for="card_number">Card Number:</label><br>
-                <input type="text" name="card_number" id="card_number" required><br><br>
+                <input type="text" name="card_number" id="card_number" ><br><br>
 
                 <input type="submit" name="completePurchase" value="Complete Purchase">
+                <input type="submit" name="cancelCheckout" value="Cancel Checkout" class="cancelButton">
 
             </form>
         <?php else: ?>
             <form method="post" action="">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->
                 <label for="name">Full Name:</label><br>
-                <input type="text" name="name" id="name" required><br><br>
+                <input type="text" name="name" id="name" ><br><br>
 
                 <label for="address">Shipping Address:</label><br>
-                <textarea name="address" id="address" rows="4" required></textarea><br><br>
+                <textarea name="address" id="address" rows="4" ></textarea><br><br>
 
                 <label for="card_number">Card Number:</label><br>
-                <input type="text" name="card_number" id="card_number" required><br><br>
+                <input type="text" name="card_number" id="card_number" ><br><br>
 
-                <input type="submit" name="guestCheckoutSubmit" value="Complete Purchase">
+                <div class="ButtonsCheckout">
+                    <input type="submit" name="completePurchase" value="Complete Purchase">
+                    <input type="submit" name="cancelCheckout" value="Cancel Checkout" class="cancelButton">
+                </div>
             </form>
         <?php endif; ?>
     <?php endif; ?>

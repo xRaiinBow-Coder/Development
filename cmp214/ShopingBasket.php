@@ -1,9 +1,16 @@
 <?php 
 session_start();
 
+include 'SessionHacking.php';
+
 $totalPrice = 0;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
+
     
     if (isset($_POST['decrement']) && isset($_POST['id'])) {
         $id = $_POST['id'];
@@ -233,7 +240,7 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
 </head>
 <body>
     <?php include 'nav.php'; ?>
-    
+
     <?php if (!isset($_SESSION['basket']) || empty($_SESSION['basket'])): ?>
         <h2 class="Title1">Your basket is empty</h2>
     <?php else: ?>
@@ -244,17 +251,20 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
                     <span><?= $item['name'] ?> - £<?= number_format($item['price'] * $item['quantity'], 2) ?></span>
                     <span> x <?= $item['quantity'] ?></span>
 
-                    <form method="post" >
+                    <form method="post">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
                         <input type="hidden" value="<?= $i ?>" name="id">
                         <input type="submit" value="-" name="decrement">
                     </form>
 
-                    <form method="post" >
+                    <form method="post">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
                         <input type="hidden" value="<?= $i ?>" name="id">
                         <input type="submit" value="+" name="increment">
                     </form>
 
-                    <form method="post" >
+                    <form method="post">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
                         <input type="hidden" value="<?= $i ?>" name="id">
                         <input type="submit" value="Remove" name="remove">
                     </form>
@@ -269,49 +279,56 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
         <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
             <h2>Checkout</h2>
             <form method="post" action="chekout.php">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
                 <input type="submit" value="Proceed to Checkout">
             </form>
 
             <form method="post">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
                 <input type="submit" name="cancelCheckout" value="Cancel Checkout">
             </form>
         <?php elseif (isset($_SESSION['continueAsGuest'])): ?>
             <h2>Guest Checkout</h2>
             <form method="post" action="chekout.php">
+                <!-- Guest checkout form content -->
             </form>
             <form method="post">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
                 <input type="submit" name="cancelCheckout" value="Cancel Checkout">
             </form>
         <?php else: ?>
             <form method="post" class="Proceed1">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
                 <input type="submit" name="purchase" value="Proceed to Purchase">
             </form>
-            
+
             <?php if (isset($_SESSION['purchaseOption']) && $_SESSION['purchaseOption']): ?>
-    <div class="Choice">
-        <h3 class="OptionForm">Choose an option:</h3>
-            <form method="post">
-                <div class="radio">
-                        <input type="radio" name="action" value="login" id="login" required>
-                        <label for="login">Log In</label>
-                    </div>
+                <div class="Choice">
+                    <h3 class="OptionForm">Choose an option:</h3>
+                    <form method="post">
+                        <div class="radio">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                            <input type="radio" name="action" value="login" id="login" required>
+                            <label for="login">Log In</label>
+                        </div>
 
-                    <div class="radio">
-                        <input type="radio" name="action" value="guest" id="guest">
-                        <label for="guest">Continue as Guest</label>
-                    </div>
+                        <div class="radio">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                            <input type="radio" name="action" value="guest" id="guest">
+                            <label for="guest">Continue as Guest</label>
+                        </div>
 
-                    <div class="radio">
-                        <input type="radio" name="action" value="register" id="register">
-                        <label for="register">Register</label>
-                    </div>
-
-                    <input type="submit" value="Submit">
-                </form>
-            </div>
+                        <div class="radio">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                            <input type="radio" name="action" value="register" id="register">
+                            <label for="register">Register</label>
+                        </div>
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
             <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
-
 </body>
 </html>

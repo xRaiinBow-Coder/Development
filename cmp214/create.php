@@ -1,5 +1,7 @@
 <?php
 ini_set("display_errors",1);
+
+include 'SessionHacking.php';
 require 'DB.php';
 
 if(isset($_POST['upload'])) {
@@ -16,6 +18,10 @@ if(isset($_POST['upload'])) {
     if(file_exists($targetFile)) {
         $canUpload = false;
         die("Image file has already been uploaded");
+    }
+
+    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
     }
 
     if($_FILES['image']['size'] > 3000000 || $_FILES['image']['size'] === 0) {
@@ -68,12 +74,14 @@ if(isset($_POST['upload'])) {
     <h1>Create A New Product</h1>
 
     <form method="post" action="create.php" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->
+        
         <label for="name">New Product Name:</label><br>
         <input type="text" placeholder="Enter a product name" id="name" name="name" required><br><br>
 
+
         <label for="description">Product Description:</label><br>
         <textarea id="description" name="description" placeholder="Enter a product description" required></textarea><br><br>
-
         <label for="price">Product Price:</label><br>
         <input type="number" step="0.01" placeholder="Enter product price" id="price" name="price" required><br><br>
 

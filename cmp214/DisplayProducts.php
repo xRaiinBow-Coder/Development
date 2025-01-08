@@ -3,24 +3,35 @@
 ini_set("display_errors", 1);
 session_start();
 
+include 'SessionHacking.php';
 require 'DB.php';
 require 'product.php';
 require 'basketFunctions.php';
 
 $db = new DB();
 
+
 if (!isset($_SESSION['basket'])) {
     $_SESSION['basket'] = array();
 }
 
-if (isset($_POST['add'])) {
-    $productId = $_POST['id'];
-    add($db, $productId);
-    echo "Product with ID: " . htmlspecialchars($productId) . " added to basket.";
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+   
+    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
+
+   
+    if (isset($_POST['add'])) {
+        $productId = $_POST['id']; 
+        add($db, $productId); 
+        echo "Product with ID: " . htmlspecialchars($productId) . " added to basket.";
+    }
 }
 
-$filterColumn = isset($_GET['filter']) ? $_GET['filter'] : 'id';
-
+$filterColumn = isset($_GET['filter']) && in_array($_GET['filter'], ['id', 'name', 'price']) ? $_GET['filter'] : 'id';
 
 $query = $db->connect()->prepare("SELECT * FROM tbl_Productss ORDER BY $filterColumn");
 $query->execute();
@@ -34,6 +45,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
     $productDescription = $row['description'];
     $productPrice = $row['price'];
 
+    
     $productPrice = ($productPrice === null) ? 0.00 : (float)$productPrice;
 
     $products[] = new Product($productId, $productName, $productImage, $productDescription, $productPrice);
@@ -78,9 +90,9 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                         <p>Price: $<?= number_format($product->price(), 2) ?></p>
                     </div>
                     <form method="post" action="">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->
                         <input type="hidden" name="id" value="<?= htmlspecialchars($product->id(), ENT_QUOTES, 'UTF-8') ?>">
                         <input type="submit" class="btn" name="add" value="Add to Basket">
-                        
                     </form>
                 </div>
             <?php endforeach; ?>

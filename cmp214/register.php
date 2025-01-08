@@ -2,6 +2,7 @@
 
 ini_set("display_errors", 1);
 
+include 'SessionHacking.php';
 require 'DB.php';
 $db = new DB;
 
@@ -18,6 +19,7 @@ $db = new DB;
 <body>
     <?php include 'nav.php'; ?>
     <form method="post" class="RegisterForm">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->
         <input type="email" placeholder="Email..." name="email" required>
         <input type="text" placeholder="Username..." name="username" required>
         <input type="password" placeholder="Password" name="password" required>
@@ -43,6 +45,10 @@ $db = new DB;
         $password = trim($_POST['password']);
         $confpass = trim($_POST['confpass']);
         $role = isset($_POST['role']) && $_SESSION['role'] === 'admin' ? $_POST['role'] : 'user'; // Default to 'user'
+
+        if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF token validation failed.");
+        }
 
         // Validate input
         if(empty($email) || empty($username) || empty($password) || empty($confpass)){
