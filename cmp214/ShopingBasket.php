@@ -1,9 +1,7 @@
 <?php 
 session_start();
 
-
 $totalPrice = 0;
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
@@ -106,54 +104,167 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Basket</title>
+    <style >
+    body {
+    height: 100vh; 
+    margin: 0;
+    padding-top: 100px; 
+    background-color: #228B22;
+    border-radius: 25px;
+}
+
+.Title1 {
+    position: absolute;
+    top: 10%; 
+    left: 50%;
+    transform: translateX(-50%); 
+}
+
+.basket {
+    width: 80%; 
+    padding: 20px;
+    background-color: #6F4E37; 
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    margin-left: auto;
+    margin-right: auto; 
+    margin-top: 10%; 
+}
+
+.items {
+    margin-bottom: 20px; 
+}
+
+.items img {
+    width: 200px;
+    height: 200px;
+    margin-right: 15px;
+    border-radius: 5px;
+    border: 2px solid #000; 
+}
+
+.items form {
+    display: inline-block;
+}
+
+.actions {
+    display: flex;  
+    flex-direction: column; 
+    align-items: flex-end;  
+    margin-right: 100%;
+}
+
+
+.Choice form {
+    width: 20%; 
+    margin: 0 auto; 
+    padding: 20px;
+    background-color: grey;
+    text-align: center;
+    z-index: 100;
+    margin-top: 20px; 
+    border-radius: 15px;
+}
+
+.OptionForm {
+    text-align: center; 
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px; 
+    color: #000; 
+}
+
+.Proceed1 {
+    text-align: center; 
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px; 
+    color: #000; 
+}
+
+.Proceed1 input[type="submit"] {
+    background-color:  black;
+    font-size: 16px;
+    color:  white;;
+    cursor: pointer;
+    border-radius: 5px;
+    border-radius: solid black;
+}
+
+.Proceed1 input[type="submit"]:hover {
+    background-color: #4E3629; 
+    color: #228B22; 
+}
+
+.Choice form .radio {
+    margin-bottom: 15px; 
+    display: flex;
+    justify-content: left; 
+    align-items: center; 
+}
+
+.Choice input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    accent-color: #6F4E37; 
+}
+
+.Choice input[type="submit"] {
+    background-color:  black;
+    font-size: 16px;
+    color:  white;;
+    cursor: pointer;
+    border-radius: 5px;
+    border-radius: solid black;
+}
+
+.Choice input[type="submit"]:hover {
+    background-color: #4E3629; 
+    color: #228B22; 
+}
+
+
+
+
+
+    </style>
 </head>
 <body>
     <?php include 'nav.php'; ?>
     
     <?php if (!isset($_SESSION['basket']) || empty($_SESSION['basket'])): ?>
-        <h2>Your basket is empty</h2>
+        <h2 class="Title1">Your basket is empty</h2>
     <?php else: ?>
-        <table border="1">
-            <tr>
-                <th>Item</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Actions</th>
-            </tr>
-
+        <div class="basket">
             <?php foreach ($_SESSION['basket'] as $i => $item): ?>
-                <tr>
-                    <td><img src="<?= $item['image'] ?>" width="50px" height="50px" alt="Product Image"></td>
-                    <td><?= $item['name'] ?></td>
-                    <td>£<?= number_format($item['price'] * $item['quantity'], 2) ?></td>
-                    <td>
-                        <form method="post" style="display:inline;">
-                            <input type="hidden" value="<?= $i ?>" name="id">
-                            <input type="submit" value="-" name="decrement">
-                        </form>
+                <div class="items">
+                    <img src="<?= $item['image'] ?>" alt="Product Image">
+                    <span><?= $item['name'] ?> - £<?= number_format($item['price'] * $item['quantity'], 2) ?></span>
+                    <span> x <?= $item['quantity'] ?></span>
 
-                        <?= $item['quantity'] ?>
+                    <form method="post" >
+                        <input type="hidden" value="<?= $i ?>" name="id">
+                        <input type="submit" value="-" name="decrement">
+                    </form>
 
-                        <form method="post" style="display:inline;">
-                            <input type="hidden" value="<?= $i ?>" name="id">
-                            <input type="submit" value="+" name="increment">
-                        </form>
-                    </td>
-                    <td>
-                        <form method="post" style="display:inline;">
-                            <input type="hidden" value="<?= $i ?>" name="id">
-                            <input type="submit" value="Remove" name="remove">
-                        </form>
-                    </td>
-                </tr>
+                    <form method="post" >
+                        <input type="hidden" value="<?= $i ?>" name="id">
+                        <input type="submit" value="+" name="increment">
+                    </form>
+
+                    <form method="post" >
+                        <input type="hidden" value="<?= $i ?>" name="id">
+                        <input type="submit" value="Remove" name="remove">
+                    </form>
+                </div>
             <?php endforeach; ?>
 
-            <tr>
-                <td colspan="3" style="text-align:right;">Grand total</td>
-                <td>£<?= number_format($totalPrice, 2) ?></td>
-            </tr>
-        </table>
+            <div class="total-price">
+                <h3>Grand Total: £<?= number_format($totalPrice, 2) ?></h3>
+            </div>
+        </div>
 
         <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
             <h2>Checkout</h2>
@@ -172,21 +283,32 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
                 <input type="submit" name="cancelCheckout" value="Cancel Checkout">
             </form>
         <?php else: ?>
-            <form method="post">
+            <form method="post" class="Proceed1">
                 <input type="submit" name="purchase" value="Proceed to Purchase">
             </form>
-
+            
             <?php if (isset($_SESSION['purchaseOption']) && $_SESSION['purchaseOption']): ?>
-                <h3>Choose an option:</h3>
-                <form method="post">
-                    <input type="radio" name="action" value="login" id="login" required>
-                    <label for="login">Log In</label><br>
-                    <input type="radio" name="action" value="guest" id="guest">
-                    <label for="guest">Continue as Guest</label><br>
-                    <input type="radio" name="action" value="register" id="register">
-                    <label for="register">Register</label><br>
+    <div class="Choice">
+        <h3 class="OptionForm">Choose an option:</h3>
+            <form method="post">
+                <div class="radio">
+                        <input type="radio" name="action" value="login" id="login" required>
+                        <label for="login">Log In</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="action" value="guest" id="guest">
+                        <label for="guest">Continue as Guest</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" name="action" value="register" id="register">
+                        <label for="register">Register</label>
+                    </div>
+
                     <input type="submit" value="Submit">
                 </form>
+            </div>
             <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
