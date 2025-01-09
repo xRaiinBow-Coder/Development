@@ -1,4 +1,8 @@
 <?php
+
+include 'SessionHacking.php';
+
+
 session_start();
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     if ($_SESSION['role'] === 'admin') {
