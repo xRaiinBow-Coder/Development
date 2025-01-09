@@ -126,14 +126,12 @@ $db = new DB;
             die();
         }
 
-        // Connect to the database
         $conn = $db->connect();
         if(!$conn){
             echo 'Database failed to connect.';
             die();
         }
 
-        // Check if email or username already exists
         $emailQuery = $conn->prepare('SELECT * FROM tbl_users WHERE email = :email OR username = :username');
         $emailQuery->bindParam(':email', $email, PDO::PARAM_STR);
         $emailQuery->bindParam(':username', $username, PDO::PARAM_STR);
@@ -143,11 +141,11 @@ $db = new DB;
             echo 'Email or Username is already in use!';
             die();
         } else {
-            // Hash the password
+            
             $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
             $uuid = generateUUID();
 
-            // Insert the new user into the database
+            
             $insertQuery = $conn->prepare('INSERT INTO tbl_users (email, username, password, uuid, role) VALUES (:email, :username, :password, :uuid, :role)');
             $insertQuery->bindParam(':email', $email, PDO::PARAM_STR);
             $insertQuery->bindParam(':username', $username, PDO::PARAM_STR);

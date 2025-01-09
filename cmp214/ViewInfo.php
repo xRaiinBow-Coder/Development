@@ -9,15 +9,15 @@ require 'product.php';
 $db = new DB();
 
 if (isset($_POST['id'])) {
-    // Retrieve the product ID from the form submission
+
     $productId = $_POST['id'];
 
-    // Fetch only the description of the product based on the ID
+    
     $query = $db->connect()->prepare("SELECT description FROM tbl_Productss WHERE id = :id");
     $query->bindParam(':id', $productId, PDO::PARAM_INT);
     $query->execute();
 
-    // Fetch the product description
+    
     $product = $query->fetch(PDO::FETCH_ASSOC);
 
     if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
@@ -25,7 +25,7 @@ if (isset($_POST['id'])) {
     }
 
     if ($product) {
-        $description = $product['description']; // Now you have only the description
+        $description = $product['description']; 
     } else {
         echo "Product not found.";
         exit;

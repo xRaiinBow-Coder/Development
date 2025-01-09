@@ -15,7 +15,6 @@ if (!isset($_SESSION['basket'])) {
 }
 
 if (isset($_POST['add'])) {
-    // CSRF token validation
     if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("CSRF token validation failed.");
     }
