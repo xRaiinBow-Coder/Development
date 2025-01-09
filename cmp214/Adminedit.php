@@ -7,7 +7,7 @@ require_once 'DB.php';
 $purchaseId = $_GET['id'] ?? null;  
 
 if (!$purchaseId) {
-    die("<p style='color: red;'>Purchase ID is missing.</p>");
+    die("Purchase ID is missing.");
 }
 
 try {
@@ -21,20 +21,20 @@ try {
     $purchase = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$purchase) {
-        die("<p style='color: red;'>Purchase not found.</p>");
+        die("Purchase not found");
     }
 
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-            die("<p style='color: red;'>CSRF token validation failed.</p>");
+            die("CSRF token validation failed");
         }
         
         $name = trim($_POST['name']);
         $address = trim($_POST['address']);
         
         if (empty($name) || empty($address)) {
-            echo "<p style='color: red;'>All fields are required!</p>";
+            echo "All fields are required!";
         } else {
     
             $updateQuery = "UPDATE tbl_Reciepts SET name = :name, address = :address WHERE id = :id";
@@ -51,7 +51,7 @@ try {
         }
     }
 } catch (PDOException $e) {
-    die("<p style='color: red;'>Database connection failed: " . $e->getMessage() . "</p>");
+    die("Database connection failed: " . $e->getMessage());
 }
 ?>
 
@@ -61,11 +61,63 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Purchase</title>
+    <style>
+
+        body {
+            background-color: #228B22;
+        }
+
+        h1 {
+            position: absolute;  
+            top: 20%;           
+            left: 50%;           
+            transform: translateX(-50%); 
+        }
+
+        .EditForm {
+            position: absolute;  
+            top: 30%;           
+            left: 50%;           
+            transform: translateX(-50%); 
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px black;
+            background-color: #6F4E37;
+            padding: 20px;   
+            width: 600px;    
+            display: flex;   
+            flex-direction: column;  
+            gap: 10px;
+    
+        }
+
+        .EditForm label {
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        input[type="submit"] {
+            background-color:  #228B22;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 50%;      
+            display: block;  
+            margin: 0 auto;  
+        }
+
+        input[type="submit"]:hover {
+            background-color: white;
+            color: black;
+        }
+    </style>
 </head>
 <body>
-    <h1>Edit Purchase - Order ID: <?php echo htmlspecialchars($purchase['id']); ?></h1>
+    <?php include 'nav.php'; ?>
+    <h1>Purchase - ID: <?php echo htmlspecialchars($purchase['id']); ?></h1>
 
-    <form method="post" action="">
+    <form method="post" class="EditForm">
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  
 
         <label for="name">Full Name:</label><br>

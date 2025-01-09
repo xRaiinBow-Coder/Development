@@ -13,8 +13,7 @@ require_once 'DB.php';
         $deleteStmt = $pdo->prepare($deleteQuery);
         $deleteStmt->execute([':id' => $productId]);
 
-        echo "<p>Deleted successfully.</p>";
-        echo "<p><a href='DisplayProducts.php'>This way back to products</a></p>";
+        header('location: DisplayProducts.php');
 
     } catch (PDOException $e) {
         die("<p style='color: red;'>Database error: " . $e->getMessage() . "</p>");

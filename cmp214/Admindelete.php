@@ -14,8 +14,7 @@ try {
     $deleteStmt = $pdo->prepare($deleteQuery);
     $deleteStmt->execute([':id' => $purchaseId]);
 
-    echo "<p>Deleted successfully.</p>";
-    echo "<p><a href='Sales.php'>Back to the purchase history!</a></p>";
+    header('location: Sales.php');
 
 } catch (PDOException $e) {
     die("<p style='color: red;'>Database error: " . $e->getMessage() . "</p>");

@@ -93,7 +93,7 @@ if (isset($_POST['login'])) {
             display: flex;   
             flex-direction: column;  
             gap: 10px;
-            backdrop-filter: blur(10px);
+            
         }
 
         input[type="submit"] {

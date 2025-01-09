@@ -27,6 +27,7 @@ if(isset($_POST['upload'])) {
     if($_FILES['image']['size'] > 3000000 || $_FILES['image']['size'] === 0) {
         $canUpload = false;
         die("Incorrect file size. Must be less than 3MB");
+        
     }
 
     if(!in_array(mime_content_type($_FILES['image']['tmp_name']), $supported)) {
@@ -53,7 +54,8 @@ if(isset($_POST['upload'])) {
 
             $query->execute();
 
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            header('Location: create.php');
+            echo "Succes";
             exit();  
         } else {
             die("Error uploading file.");
@@ -68,12 +70,81 @@ if(isset($_POST['upload'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Product</title>
+    <style>
+
+        body {
+            background-color: #228B22
+        }
+
+        h1 {
+            position: absolute;  
+            top: 40%;           
+            left: 50%;           
+            transform: translateX(-50%); 
+        }
+
+        .CreatePost {
+            position: absolute;  
+            top: 30%;           
+            left: 50%;           
+            transform: translateX(-50%); 
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px black;
+            background-color: #6F4E37;
+            padding: 20px;   
+            width: 600px;    
+            display: flex;   
+            flex-direction: column;  
+            gap: 5px;
+        }
+
+        .CreatePost label {
+            text-align: center;
+        }
+
+        input[type="submit"] {
+            background-color:  #228B22;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 50%;      
+            display: block;  
+            margin: 0 auto;  
+        }
+
+        input[type="file"] {
+            background-color:  #228B22;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 40%;      
+            display: block;  
+            margin: 0 auto;
+            text-transform: uppercase;
+        }
+
+        input[type="file"]:hover {
+            background-color: white;
+            color: black;
+        }
+
+        input[type="submit"]:hover {
+            background-color: white;
+            color: black;
+        }
+        
+    </style>
 </head>
 <body>
+
+
 <?php include 'nav.php'; ?>
     <h1>Create A New Product</h1>
 
-    <form method="post" action="create.php" enctype="multipart/form-data">
+    <form method="post" action="create.php" enctype="multipart/form-data" class="CreatePost">
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">  <!-- CSRF Token -->
         
         <label for="name">New Product Name:</label><br>

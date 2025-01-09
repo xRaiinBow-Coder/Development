@@ -232,6 +232,31 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
     color: #228B22; 
 }
 
+.Boots input[type="submit"]{
+    background-color:  black;
+    font-size: 16px;
+    color:  white;;
+    cursor: pointer;
+    border-radius: 5px;
+    border-radius: solid black;
+    position: absolute;  
+    top: 17%;           
+    left: 10%;           
+    border: none;
+}
+
+
+.Boots input[type="submit"]:hover {
+    background-color: #4E3629; 
+    color: #228B22; 
+}
+
+.CheckoutLog {
+    position: absolute;  
+    top: 15%;           
+    left: 50%;           
+    transform: translateX(-50%); 
+}
 
 
 
@@ -252,19 +277,19 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
                     <span> x <?= $item['quantity'] ?></span>
 
                     <form method="post">
-                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> 
                         <input type="hidden" value="<?= $i ?>" name="id">
                         <input type="submit" value="-" name="decrement">
                     </form>
 
                     <form method="post">
-                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> 
                         <input type="hidden" value="<?= $i ?>" name="id">
                         <input type="submit" value="+" name="increment">
                     </form>
 
                     <form method="post">
-                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> 
                         <input type="hidden" value="<?= $i ?>" name="id">
                         <input type="submit" value="Remove" name="remove">
                     </form>
@@ -277,28 +302,28 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
         </div>
 
         <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-            <h2>Checkout</h2>
-            <form method="post" action="chekout.php">
-                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+            <h2 class="CheckoutLog">Checkout</h2>
+            <form method="post" action="chekout.php" class="Boots">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> 
                 <input type="submit" value="Proceed to Checkout">
             </form>
-
-            <form method="post">
-                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
-                <input type="submit" name="cancelCheckout" value="Cancel Checkout">
-            </form>
+        
         <?php elseif (isset($_SESSION['continueAsGuest'])): ?>
             <h2>Guest Checkout</h2>
             <form method="post" action="chekout.php">
-                <!-- Guest checkout form content -->
+            <input type="submit" value="Proceed to Checkout">
             </form>
+            
             <form method="post">
-                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> 
                 <input type="submit" name="cancelCheckout" value="Cancel Checkout">
+            
             </form>
+        
         <?php else: ?>
+            
             <form method="post" class="Proceed1">
-                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> 
                 <input type="submit" name="purchase" value="Proceed to Purchase">
             </form>
 
@@ -307,23 +332,23 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
                     <h3 class="OptionForm">Choose an option:</h3>
                     <form method="post">
                         <div class="radio">
-                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> 
                             <input type="radio" name="action" value="login" id="login" required>
                             <label for="login">Log In</label>
                         </div>
 
                         <div class="radio">
-                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> 
                             <input type="radio" name="action" value="guest" id="guest">
                             <label for="guest">Continue as Guest</label>
                         </div>
 
                         <div class="radio">
-                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> 
                             <input type="radio" name="action" value="register" id="register">
                             <label for="register">Register</label>
                         </div>
-                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> <!-- CSRF Token -->
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>"> 
                         <input type="submit" value="Submit">
                     </form>
                 </div>
