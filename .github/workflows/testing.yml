@@ -43,7 +43,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps 
           port: 21
-          local-dir: ./cmp214
+          local-dir: ./cmp214/
           server-dir: /kljefferson/cmp214
                         
 
