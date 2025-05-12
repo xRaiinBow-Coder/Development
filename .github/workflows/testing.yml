@@ -27,7 +27,7 @@ jobs:
         run: find cmp214/ -type f -name "*.php" -exec php -l {} \;
 
   CD:
-    name: Deploy to FTP Server
+    name: Deploy to SFTP Server
     runs-on: ubuntu-latest
     needs: php-ci
 
@@ -35,9 +35,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: Upload via SFTP
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+  
+
