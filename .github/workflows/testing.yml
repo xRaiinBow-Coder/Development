@@ -26,3 +26,5 @@ jobs:
       - name: Lint all PHP files in cmp214/
         run: find cmp214/ -type f -name "*.php" -exec php -l {} \;
 
+      - name: Run tests
+        run: php phpunit
