@@ -35,16 +35,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: Deploy via SFTP
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps 
-          port: 21
-          local-dir: ./cmp214/
-          server-dir: /kljefferson/cmp214/
+          port: 22
+          source: "cmp214/*"
+          target: "/home/kljefferson/cmp214/"
                         
 
   
