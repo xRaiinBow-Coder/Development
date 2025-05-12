@@ -36,15 +36,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        uses: appleboy/scp-action@v0.1.7
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/cmp214/
-          port: 21
-          protocol: ftp  # options: ftp, ftps
-          timeout: 60
-
+          
   
 
