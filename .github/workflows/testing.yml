@@ -36,12 +36,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Upload via SFTP
-        uses: appleboy/scp-action@v0.1.7
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 22 # SFTP default
-          source: "cmp214/*"
-          target: "/path/on/server"
+          port: 22
+  
 
