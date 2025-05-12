@@ -44,7 +44,7 @@ jobs:
           protocol: ftps 
           port: 21
           local-dir: ./cmp214/
-          server-dir: /kljefferson/cmp214
+          server-dir: /kljefferson/cmp214/
                         
 
   
