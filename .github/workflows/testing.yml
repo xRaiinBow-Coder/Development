@@ -40,10 +40,10 @@ jobs:
         with:
           host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PASSWORD }}
           port: 22
           source: "cmp214/*"
-          target: "/home/kljefferson/public_html/cmp214"  # adjust if needed                     
+          target: "/home/kljefferson/public_html/cmp214"                    
                                   
                       
 
