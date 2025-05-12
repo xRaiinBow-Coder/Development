@@ -35,12 +35,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: Deploy via SFTP
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }} #asd
-          
-  
+          host: ${{ secrets.FTP_SERVER }}         # example: "sencldigitech.co.uk"
+          username: ${{ secrets.FTP_USERNAME }}   # your SFTP username
+          password: ${{ secrets.FTP_PASSWORD }}   # your SFTP password
+      
 
