@@ -41,8 +41,7 @@ jobs:
           host: ${{ secrets.FTP_SERVER }}         
           username: ${{ secrets.FTP_USERNAME }}   
           password: ${{ secrets.FTP_Password }}       
-          port: 22                               
-          source: "cmp214/"              
+             
                   
 
   
