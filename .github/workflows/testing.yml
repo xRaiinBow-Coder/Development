@@ -38,11 +38,11 @@ jobs:
     - name: Deploy via SFTP
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ secrets.FTP_SERVER }}         # example: "sencldigitech.co.uk"
-        username: ${{ secrets.FTP_USERNAME }}   # your SFTP username
-        password: ${{ secrets.FTP_PASSWORD }}   # your SFTP password
-        source: "cmp214/*"                      # files you want to upload
-        target: "/home/kljefferson/public_html/cmp214"  # correct server path
+        host: ${{ secrets.FTP_SERVER }}         
+        username: ${{ secrets.FTP_USERNAME }}   
+        password: ${{ secrets.FTP_PASSWORD }}   
+        source: "cmp214/*"                      
+        target: "/home/kljefferson/public_html/cmp214"  
         port: 22
           
   
