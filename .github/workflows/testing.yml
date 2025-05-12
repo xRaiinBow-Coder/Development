@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           source: "cmp214/*"
-          target: "/home/kljefferson/public_html/cmp214" #fds
+          target: "/home/kljefferson/public_html/cmp214" #f
           
   
 
