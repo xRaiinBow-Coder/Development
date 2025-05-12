@@ -40,7 +40,8 @@ jobs:
         with:
           host: ${{ secrets.FTP_SERVER }}         
           username: ${{ secrets.FTP_USERNAME }}   
-          password: ${{ secrets.FTP_Password }}       
+          password: ${{ secrets.FTP_Password }}  
+          source: "cmp214/"     
              
                   
 
