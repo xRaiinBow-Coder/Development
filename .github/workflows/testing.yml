@@ -43,7 +43,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}   # your SFTP password
           port: 22
           source: "cmp214/*"
-          target: "/home/kljefferson/public_html/cmp214"  # adjust if needed
+          target: "/home/kljefferson/public_html/cmp214/"  # adjust if needed
                               
 
   
