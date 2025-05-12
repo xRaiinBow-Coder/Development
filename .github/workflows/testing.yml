@@ -26,7 +26,7 @@ jobs:
       - name: Lint all PHP files in cmp214/
         run: find cmp214/ -type f -name "*.php" -exec php -l {} \;
 
-  deploy:
+  CD:
     name: Deploy to FTP Server
     runs-on: ubuntu-latest
     needs: php-ci
