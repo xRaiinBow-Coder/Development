@@ -27,17 +27,17 @@ jobs:
         run: find cmp214/ -type f -name "*.php" -exec php -l {} \;
 
   CD:
-  - name: FTP Deploy
-    uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-    with:
-      server: ${{ secrets.FTP_SERVER }}
-      username: ${{ secrets.FTP_USERNAME }}
-      password: ${{ secrets.FTP_PASSWORD }}
-      protocol: ftps  # try "ftp" if FTPS fails
-      port: 21
-      local-dir: ./cmp214
-      server-dir: /kljefferson/cmp214                       
-                            
+    - name: FTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftps  # try "ftp" if FTPS fails
+        port: 21
+        local-dir: ./cmp214
+        server-dir: /kljefferson/cmp214                       
+                              
                   
 
   
