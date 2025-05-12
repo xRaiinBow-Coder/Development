@@ -32,18 +32,15 @@ jobs:
     needs: php-ci
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Deploy via SFTP
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.FTP_SERVER }}         
-        username: ${{ secrets.FTP_USERNAME }}   
-        password: ${{ secrets.FTP_PASSWORD }}   
-        source: "cmp214/*"                      
-        target: "/home/kljefferson/public_html/cmp214"  
-        port: 22
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }} #asd
           
   
 
