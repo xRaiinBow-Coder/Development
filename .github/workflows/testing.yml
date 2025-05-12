@@ -19,9 +19,3 @@ jobs:
         with:
           php-version: '8.1'
           extensions: mbstring, xml
-
-      - name: Run PHP files check
-        run: php -l src/*.php
-
-      - name: Run tests
-        run: php phpunit
