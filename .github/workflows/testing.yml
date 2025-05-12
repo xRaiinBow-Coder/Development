@@ -42,4 +42,4 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/Development/ 
-          local-dir: cmp214/   
+          local-dir: cmp214/
