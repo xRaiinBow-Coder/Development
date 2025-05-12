@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  php-ci:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,4 +18,13 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
-          extensions: PHP, SQLite3 Editor
+          extensions: mbstring, xml
+
+      - name: Show PHP version
+        run: php -v
+
+      - name: Lint all PHP files in cmp214/
+        run: find cmp214/ -type f -name "*.php" -exec php -l {} \;
+
+      - name: Run tests
+        run: php phpunit
