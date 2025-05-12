@@ -41,7 +41,9 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps  # try "ftp" if FTPS fails
+          protocol: ftp
+          source: "cmp214/*"
+          target: "/home/kljefferson/public_html/cmp214/"
           
   
 
