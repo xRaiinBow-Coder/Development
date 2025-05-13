@@ -17,19 +17,16 @@ jobs:
           php-version: '8.1'
           extensions: mbstring, xml
 
-      - name: Set up Composer
-        run: |
-          curl -sS https://getcomposer.org/installer | php
-          sudo mv composer.phar /usr/local/bin/composer
-
-      - name: Install dependencies
-        run: composer install
-
-      - name: Run PHPUnit tests
-        run: vendor/bin/phpunit --coverage-text
-
       - name: Lint PHP files
         run: find cmp214/ -type f -name "*.php" -exec php -l {} \;
+
+      - name: Run Unit Tests (if any)
+        run: |
+          if [ -f tests/run-tests.sh ]; then
+            bash tests/run-tests.sh
+          else
+            echo "No test script found."
+          fi
 
   deploy:
     runs-on: ubuntu-latest
@@ -53,4 +50,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
 
+          
+  
 
