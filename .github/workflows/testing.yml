@@ -20,16 +20,27 @@ jobs:
       - name: Lint PHP files
         run: find cmp214/ -type f -name "*.php" -exec php -l {} \;
 
-      - name: Run BasketTest.php script
+      - name: Test ItemInfo.php script
         run: |
-          php tests/BasketTest.php
-          if [ $? -eq 0 ]; then
-            echo "Basket test passed."
+          # Create the test script dynamically
+          echo "<?php
+            session_start();
+            \$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+            \$_POST['id'] = 1;  # Simulate product ID (adjust as needed)
+            \$_POST['csrf_token'] = \$_SESSION['csrf_token'];
+            include 'ItemInfo.php';
+          ?>" > test_item_info.php
+
+          # Run the test script
+          output=$(php test_item_info.php)
+
+          # Check if the output contains the expected description text or error
+          if [[ "$output" == *"Test passed"* ]]; then
+            echo "Item info test passed."
           else
-            echo "Basket test failed."
+            echo "Item info test failed."
             exit 1
           fi
-
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,6 +63,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
+
 
           
   

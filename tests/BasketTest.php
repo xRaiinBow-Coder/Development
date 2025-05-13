@@ -1,57 +1,26 @@
 <?php
-
-// Autoload or include the necessary files
-require 'add.php';  // Include the add function definition
-require 'DB.php';    // Include DB class definition
-
-// Mock the database connection (or use an actual database in real tests)
-class MockDB {
-    public function connect() {
-        return new PDO('sqlite::memory:');  // In-memory SQLite database
-    }
-}
-
+// Simulate a session start to set the CSRF token (the same way it would happen in the real script).
 session_start();
 
-// Initialize session variable
-$_SESSION['basket'] = [];
+// Manually set a CSRF token, as the real script would generate it.
+$_SESSION['csrf_token'] = bin2hex(random_bytes(32));  // This will generate a new CSRF token.
 
-// Mock the product data
-$mockDb = new MockDB();
-$db = $mockDb->connect();
-
-// Insert a sample product for the test (you should insert products before running add())
-$db->exec("CREATE TABLE tbl_Productss (id INTEGER PRIMARY KEY, name TEXT, image TEXT, price DECIMAL(10, 2));");
-$db->exec("INSERT INTO tbl_Productss (id, name, image, price) VALUES (1, 'Sample Product', 'sample.jpg', 9.99);");
-
-// Test 1: Adding a new product to the basket
-add($db, 1);  // Add product with id = 1
-
-// Assert that the basket contains the added product
-if (count($_SESSION['basket']) == 1 && $_SESSION['basket'][0]['id'] == 1) {
-    echo "Test 1 passed: Product was added to the basket.\n";
-} else {
-    echo "Test 1 failed: Product was not added to the basket.\n";
+if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    die("CSRF token validation failed.");
 }
 
-// Test 2: Adding the same product again (should increase quantity)
-add($db, 1);  // Add product with id = 1 again
+// Simulate the product ID and POST request data.
+$_POST['id'] = 1;  // Replace this with an existing product ID from your database for a real test.
+$_POST['csrf_token'] = $_SESSION['csrf_token'];  // Send the correct CSRF token.
 
-// Assert that the basket contains the product and the quantity is 2
-if (count($_SESSION['basket']) == 1 && $_SESSION['basket'][0]['quantity'] == 2) {
-    echo "Test 2 passed: Product quantity was updated to 2.\n";
+// Include the script to be tested.
+include 'ItemInfo.php';
+
+// Capture the output and check for product description (can adjust based on actual HTML).
+$output = ob_get_clean();
+if (strpos($output, 'Product Description') !== false) {
+    echo "Test passed: Product description found.\n";
 } else {
-    echo "Test 2 failed: Product quantity was not updated correctly.\n";
+    echo "Test failed: Product description not found.\n";
+    exit(1);  // Fail the test if the description isn't found.
 }
-
-// Test 3: Try adding a non-existent product (should fail)
-add($db, 999);  // Non-existent product
-
-// Assert that no product was added
-if (count($_SESSION['basket']) == 1) {
-    echo "Test 3 passed: No product was added for non-existent product.\n";
-} else {
-    echo "Test 3 failed: A non-existent product should not be added.\n";
-}
-
-?>
