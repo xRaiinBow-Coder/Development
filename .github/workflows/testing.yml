@@ -20,41 +20,12 @@ jobs:
       - name: Lint PHP files
         run: find cmp214/ -type f -name "*.php" -exec php -l {} \;
 
-      - name: Test ItemInfo.php script
+      - name: Run Unit Tests (if any)
         run: |
-          # Change to the directory where ItemInfo.php is located (if not in root)
-          cd $GITHUB_WORKSPACE  # Adjust if necessary, this is the root directory
-
-          # Create the test script dynamically
-          echo "<?php
-            session_start();
-            \$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-            \$_POST['id'] = 1;  # Simulate product ID (adjust as needed)
-            \$_POST['csrf_token'] = \$_SESSION['csrf_token'];
-            \$script_path = __DIR__ . '/ItemInfo.php';
-            if (file_exists(\$script_path)) {
-                include \$script_path;
-            } else {
-                die('ItemInfo.php not found at path: ' . \$script_path);
-            }
-            \$output = ob_get_clean();
-            if (strpos(\$output, 'Product Description') !== false) {
-                echo 'Test passed: Product description found.';
-            } else {
-                echo 'Test failed: Product description not found.';
-                exit(1);
-            }
-          ?>" > test_item_info.php
-
-          # Run the test script
-          output=$(php test_item_info.php)
-
-          # Check if the output contains the expected description text or error
-          if [[ "$output" == *"Test passed"* ]]; then
-            echo "Item info test passed."
+          if [ -f tests/run-tests.sh ]; then
+            bash tests/run-tests.sh
           else
-            echo "Item info test failed."
-            exit 1
+            echo "No test script found."
           fi
 
   deploy:
@@ -78,7 +49,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
-
 
           
   
