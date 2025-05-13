@@ -1,17 +1,17 @@
 <?php
-
 use PHPUnit\Framework\TestCase;
+
+require_once __DIR__ . '/../cmp214/Product.php';
 
 class ProductTest extends TestCase
 {
-    public function testProductCanBeCreated()
+    public function testProductProperties()
     {
-        $product = new Product(1, "Sample Product", "image.jpg", "A test product", 9.99);
-
+        $product = new Product(1, 'Apple', 'apple.jpg', 'Fresh apple', 1.99);
         $this->assertEquals(1, $product->id());
-        $this->assertEquals("Sample Product", $product->name());
-        $this->assertEquals("image.jpg", $product->image());
-        $this->assertEquals("A test product", $product->description());
-        $this->assertEquals(9.99, $product->price());
+        $this->assertEquals('Apple', $product->name());
+        $this->assertEquals('apple.jpg', $product->image());
+        $this->assertEquals('Fresh apple', $product->description());
+        $this->assertEquals(1.99, $product->price());
     }
 }
