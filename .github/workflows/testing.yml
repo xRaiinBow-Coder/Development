@@ -22,11 +22,14 @@ jobs:
 
       - name: Run Unit Tests (if any)
         run: |
-          if [ -f tests/run-tests.sh ]; then
-            bash tests/run-tests.sh
+          if [ -f vendor/bin/phpunit ]; then
+            vendor/bin/phpunit
+          elif [ -f phpunit ]; then
+            phpunit
           else
-            echo "No test script found."
+            echo "PHPUnit not installed."
           fi
+
 
   deploy:
     runs-on: ubuntu-latest
