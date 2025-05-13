@@ -17,6 +17,11 @@ jobs:
           php-version: '8.1'
           extensions: mbstring, xml
 
+      - name: Set up Composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php
+          sudo mv composer.phar /usr/local/bin/composer
+
       - name: Install dependencies
         run: composer install
 
@@ -48,5 +53,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
 
-  
 
