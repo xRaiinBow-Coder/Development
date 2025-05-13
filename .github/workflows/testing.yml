@@ -20,14 +20,18 @@ jobs:
       - name: Lint PHP files
         run: find cmp214/ -type f -name "*.php" -exec php -l {} \;
 
-      - name: Run Unit Tests (if any)
+      - name: Install PHPUnit manually
         run: |
-          if [ -f vendor/bin/phpunit ]; then
-            vendor/bin/phpunit
-          elif [ -f phpunit ]; then
+          wget https://phar.phpunit.de/phpunit.phar
+          chmod +x phpunit.phar
+          sudo mv phpunit.phar /usr/local/bin/phpunit
+
+      - name: Run Unit Tests
+        run: |
+          if [ -f phpunit.xml ]; then
             phpunit
           else
-            echo "PHPUnit not installed."
+            echo "No phpunit.xml config found. Skipping tests."
           fi
 
 
