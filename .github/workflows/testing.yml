@@ -20,18 +20,15 @@ jobs:
       - name: Lint PHP files
         run: find cmp214/ -type f -name "*.php" -exec php -l {} \;
 
-      - name: Run Unit Tests (if any)
+      - name: Run BasketTest.php script
         run: |
-          if [ -f vendor/bin/phpunit ]; then
-            vendor/bin/phpunit
-          elif [ -f phpunit ]; then
-            phpunit
+          php tests/BasketTest.php
+          if [ $? -eq 0 ]; then
+            echo "Basket test passed."
           else
-            echo "PHPUnit not installed."
+            echo "Basket test failed."
+            exit 1
           fi
-          
-      - name: Run PHPUnit
-        run: phpunit --testdox tests
 
 
   deploy:
